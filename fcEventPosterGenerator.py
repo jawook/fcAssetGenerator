@@ -41,6 +41,32 @@ def load_background_canvas(path="background.png", w=POSTER_WIDTH, h=POSTER_HEIGH
     bg_fitted = ImageOps.fit(bg, (w, h), method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
     return bg_fitted
 
+def fit_font_to_width(draw, text, font_path, target_size, max_width, min_size=60):
+    """
+    Returns a PIL ImageFont that will render `text` no wider than `max_width`.
+    Starts at `target_size` and scales down (one-pass estimate + small refine loop).
+    """
+    # Start at target size
+    font = load_font(font_path, target_size)
+
+    # Fast estimate: font size scales ~linearly with text width
+    bbox = draw.textbbox((0, 0), text, font=font, anchor="lt")
+    text_w = bbox[2] - bbox[0]
+    if text_w > 0 and text_w > max_width:
+        scale = max_width / text_w
+        new_size = max(min_size, int(target_size * scale))
+        font = load_font(font_path, new_size)
+
+    # Refine to be safe
+    while True:
+        bbox = draw.textbbox((0, 0), text, font=font, anchor="lt")
+        text_w = bbox[2] - bbox[0]
+        if text_w <= max_width or font.size <= min_size:
+            break
+        font = load_font(font.path if hasattr(font, "path") else font_path, font.size - 2)
+
+    return font
+
 def place_centered_text(draw, text, y, font, fill, w=POSTER_WIDTH):
     bbox = draw.textbbox((0,0), text, font=font, anchor="lt")
     text_w = bbox[2]-bbox[0]
@@ -66,9 +92,17 @@ def render_poster(city, address_line1, address_line2, date_str, time_str):
     img.paste(logo, ((POSTER_WIDTH - logo.width)//2, top_y), mask=logo if logo.mode=="RGBA" else None)
     top_y += logo.height + 20
 
-    # CITY (big red)
+    # CITY (big red) — auto-fit width
     city_y = top_y + 40
     city_text = city.upper()
+    
+    side_margin = int(POSTER_WIDTH * 0.05)     # 5% margins on each side
+    max_city_width = POSTER_WIDTH - (2 * side_margin)
+    
+    # choose a min size that still looks bold enough
+    title_font = fit_font_to_width(draw, city_text, TITLE_FONT_PATH, font_size_title, max_city_width, min_size=120)
+    
+    # center draw using 'ma' as before
     draw.text((POSTER_WIDTH//2, city_y), city_text, font=title_font, fill="#E53935", anchor="ma")
     city_bbox = draw.textbbox((POSTER_WIDTH//2, city_y), city_text, font=title_font, anchor="ma")
     y = city_bbox[3] + 60
@@ -126,6 +160,7 @@ def to_pdf_bytes_flat(poster_img):
 #%% Streamlit Interface
 
 poster = None
+st.markdown("_If you are on mobile, look for >> in the top left for all options._")
 st.title("Generate your Own Event Details Poster")
 st.write("""Enter the relevant information below and then click on 'Generate 
          Poster.'""")
