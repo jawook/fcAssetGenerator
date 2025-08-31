@@ -21,8 +21,9 @@ pages = {
 with st.sidebar:
     st.logo("Forever Canadian No Text.svg",size="large")
     pg = st.navigation(pages,expanded=False)
-    st.write("""This resource was built by Jamie Wilkie (a canvasser for 
-             Forever Canada) on a volunteer basis.  Use at your own risk.""")  
+    st.write("""This unofficial resource was built by Jamie Wilkie (a 
+             canvasser for Forever Canada) on a volunteer basis.  Use at your 
+             own risk.""")  
     st.write("""It is intended to provide helpful assets for canvassers.  No
              infringement is intended.""")
     st.write("For any concerns, contact jamieforevercanada@gmail.com")
