@@ -6,6 +6,7 @@ import streamlit as st
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
+from zoneinfo import ZoneInfo
 
 #%% Key inputs
 
@@ -17,6 +18,7 @@ qr_img = Image.open('qrcode.png').convert("RGBA")
 site_address = 'Forever-Canadian.ca'
 question1 = 'Sign the Petition:'
 question2 = 'Do you agree that Alberta should remain in Canada?'
+APP_TZ = ZoneInfo("America/Edmonton")  # <- change if needed
 
 POSTER_WIDTH, POSTER_HEIGHT = 2550, 3300  # 8.5x11 in @ ~300 DPI
 
@@ -136,11 +138,14 @@ col1, col2 = st.columns(2)
 with col1:
     city = st.text_input("City (e.g., Sherwood Park)", 
                          "Municipality Name")
-    date_input = st.date_input("Event Date")
-    time_start = st.time_input("Start Time")
+    today_local = datetime.datetime.now(APP_TZ).date()
+    date_input = st.date_input("Event Date", value=today_local)
+    now_local = datetime.datetime.now(APP_TZ)
+    default_start = now_local.time().replace(second=0, microsecond=0)
+    time_start = st.time_input("Start Time", value=default_start)
     time_end = st.time_input("End Time", 
                              value = datetime.datetime.combine(
-                                 datetime.date.today(),
+                                 today_local,
                                  time_start
                                  ) + datetime.timedelta(hours=2)
                              )

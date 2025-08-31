@@ -6,6 +6,7 @@ import streamlit as st
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
+from zoneinfo import ZoneInfo
 
 #%% Key inputs
 
@@ -128,6 +129,7 @@ st.write("""Download buttons will appear beneath the preview image allowing you 
 st.write("""PNG files are great for social media posts, PDF files are great for
          printing.""")
 
+today_local = datetime.datetime.now(ZoneInfo("America/Edmonton")).date()
 date_input = st.date_input("Today's Date", value="today", disabled=True)
 date_str1 = datetime.datetime.strftime(date_input, "%A, %B %d, %Y") if date_input else ""
 date_str2 = datetime.datetime.strftime(date_input, "%m/%d/%Y") if date_input else ""
