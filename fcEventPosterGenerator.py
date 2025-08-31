@@ -74,7 +74,8 @@ def place_centered_text(draw, text, y, font, fill, w=POSTER_WIDTH):
     draw.text((x, y), text, font=font, fill=fill)
     return y + (bbox[3]-bbox[1])
 
-def render_poster(city, address_line1, address_line2, date_str, time_str):
+def render_poster(city, address_line1, address_line2, date_str, time_str,
+                  questionText, addlInfo):
     
     img = load_background_canvas()
     draw = ImageDraw.Draw(img)
@@ -125,9 +126,16 @@ def render_poster(city, address_line1, address_line2, date_str, time_str):
 
     # Petition Question
     y += 400
-    draw.text((POSTER_WIDTH//2, y), question1, font=subtitle_font, fill=(255,0,0), anchor="ma")
-    y += font_size_subtitle + 20
-    draw.text((POSTER_WIDTH//2, y), question2, font=body_font, fill=(255,0,0), anchor="ma")
+    if questionText:
+        draw.text((POSTER_WIDTH//2, y), question1, font=subtitle_font, fill=(255,0,0), anchor="ma")
+        y += font_size_subtitle + 20
+        draw.text((POSTER_WIDTH//2, y), question2, font=body_font, fill=(255,0,0), anchor="ma")
+    
+    # Additional Information
+    y += 250
+    draw.text((POSTER_WIDTH//2, y), addlInfo, font=body_font, fill="white",
+              anchor="ma")
+    
     
     # Site (bottom, above grass)
     draw.text((POSTER_WIDTH//2, int(POSTER_HEIGHT*0.8)), site_address, 
@@ -196,9 +204,14 @@ with col2:
         f"{time_start.strftime('%I:%M %p').lstrip('0')} – {time_end.strftime('%I:%M %p').lstrip('0')}"
         if time_start and time_end else ""
     )
+    addlinfo = st.text_input("Additional information (in white above website, optional)",
+                             value="")
+    questionText = st.checkbox("Do you want the question to appear on the poster?",
+                               value=True)
+    
     if st.button("Generate Poster"):
         poster = render_poster(city, address_line1, address_line2, date_str, 
-                               time_str)         
+                               time_str, questionText, addlinfo)         
 
 if poster != None:
     st.image(poster, caption="Preview (PNG)")
