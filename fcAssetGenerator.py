@@ -124,6 +124,7 @@ def to_pdf_bytes_flat(poster_img):
 poster = None
 st.set_page_config(page_title="Poster Generator", page_icon="🖼️", layout="centered")
 
+st.image(logo_img)
 st.title("Generate your Own Event Details Poster")
 st.write("""Enter the relevant information below and then click on 'Generate 
          Poster.'""")
