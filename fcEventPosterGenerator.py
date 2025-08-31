@@ -125,8 +125,8 @@ poster = None
 st.title("Generate your Own Event Details Poster")
 st.write("""Enter the relevant information below and then click on 'Generate 
          Poster.'""")
-st.write("""Wait for 'RUNNING...' in the upper left corner to disappear. It 
-         takes a minute.  Patience...""")
+st.write("""Wait for the runners, kayakers and cyclists in the upper right 
+         corner to finish doing their thing. It takes a minute.  Patience...""")
 st.write("""Download buttons will appear beneath the preview image allowing you to 
          download in png or pdf format.""")
 st.write("""PNG files are great for social media posts, PDF files are great for
