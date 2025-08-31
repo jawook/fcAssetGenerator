@@ -75,7 +75,7 @@ def place_centered_text(draw, text, y, font, fill, w=POSTER_WIDTH):
     return y + (bbox[3]-bbox[1])
 
 def render_poster(city, address_line1, address_line2, date_str, time_str,
-                  questionText, addlInfo):
+                  questionText, addlInfo1, addlInfo2):
     
     img = load_background_canvas()
     draw = ImageDraw.Draw(img)
@@ -133,9 +133,11 @@ def render_poster(city, address_line1, address_line2, date_str, time_str,
     
     # Additional Information
     y += 250
-    draw.text((POSTER_WIDTH//2, y), addlInfo, font=body_font, fill="white",
+    draw.text((POSTER_WIDTH//2, y), addlInfo1, font=body_font, fill="black",
               anchor="ma")
-    
+    y += font_size_body + 20
+    draw.text((POSTER_WIDTH//2, y), addlInfo2, font=body_font, fill="black",
+              anchor="ma")    
     
     # Site (bottom, above grass)
     draw.text((POSTER_WIDTH//2, int(POSTER_HEIGHT*0.8)), site_address, 
@@ -204,14 +206,16 @@ with col2:
         f"{time_start.strftime('%I:%M %p').lstrip('0')} – {time_end.strftime('%I:%M %p').lstrip('0')}"
         if time_start and time_end else ""
     )
-    addlinfo = st.text_input("Additional information (in white above website, optional)",
+    addlInfo1 = st.text_input("Additional information 1 (in black above website, optional)",
                              value="")
+    addlInfo2 = st.text_input("Additional information 2 (in black above website, optional)",
+                             value="")    
     questionText = st.checkbox("Do you want the question to appear on the poster?",
                                value=True)
     
     if st.button("Generate Poster"):
         poster = render_poster(city, address_line1, address_line2, date_str, 
-                               time_str, questionText, addlinfo)         
+                               time_str, questionText, addlInfo1, addlInfo2)         
 
 if poster != None:
     st.image(poster, caption="Preview (PNG)")
