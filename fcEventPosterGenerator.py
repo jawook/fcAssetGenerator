@@ -19,6 +19,9 @@ site_address = 'Forever-Canadian.ca'
 question1 = 'Sign the Petition:'
 question2 = 'Do you agree that Alberta should remain in Canada?'
 APP_TZ = ZoneInfo("America/Edmonton")  # <- change if needed
+font_size_title = 300
+font_size_subtitle = 130
+font_size_body = 90
 
 POSTER_WIDTH, POSTER_HEIGHT = 2550, 3300  # 8.5x11 in @ ~300 DPI
 
@@ -51,15 +54,14 @@ def render_poster(city, address_line1, address_line2, date_str, time_str):
     draw = ImageDraw.Draw(img)
 
     # Load fonts
-    title_font = load_font(TITLE_FONT_PATH, 190)
-    subtitle_font = load_font(TITLE_FONT_PATH, 90)
-    body_font = load_font(BODY_FONT_PATH, 70)
-    site_font = load_font(TITLE_FONT_PATH, 75)
+    title_font = load_font(TITLE_FONT_PATH, font_size_title)
+    subtitle_font = load_font(TITLE_FONT_PATH, font_size_subtitle)
+    body_font = load_font(BODY_FONT_PATH, font_size_body)
 
     # Top logo (optional)
-    top_y = int(POSTER_HEIGHT*0.07)
-    max_w = int(POSTER_WIDTH*0.24)
-    ratio = min(max_w/logo_img.width, (POSTER_HEIGHT*0.15)/logo_img.height)
+    top_y = int(POSTER_HEIGHT*0.04)
+    max_w = int(POSTER_WIDTH*0.30)
+    ratio = min(max_w/logo_img.width, (POSTER_HEIGHT*0.18)/logo_img.height)
     logo = logo_img.resize((int(logo_img.width*ratio), int(logo_img.height*ratio)))
     img.paste(logo, ((POSTER_WIDTH - logo.width)//2, top_y), mask=logo if logo.mode=="RGBA" else None)
     top_y += logo.height + 20
@@ -73,29 +75,29 @@ def render_poster(city, address_line1, address_line2, date_str, time_str):
 
     # Date
     draw.text((POSTER_WIDTH//2, y), date_str, font=subtitle_font, fill="white", anchor="ma")
-    y += 120
+    y += font_size_subtitle
 
     # Address (two lines: 1) full address 2) postal)
+    y += 20
     draw.text((POSTER_WIDTH//2, y), address_line1, font=body_font, 
               fill="white", anchor="ma")
-    y += 85
+    y += font_size_body + 20
     draw.text((POSTER_WIDTH//2, y), address_line2, font=body_font, 
               fill="white", anchor="ma")
-    y += 85
+    y += font_size_body + 20
     
     # Time
-    y += 20
     draw.text((POSTER_WIDTH//2, y), time_str, font=subtitle_font, fill="white", anchor="ma")
 
     # Petition Question
     y += 400
     draw.text((POSTER_WIDTH//2, y), question1, font=subtitle_font, fill=(255,0,0), anchor="ma")
-    y += 115
+    y += font_size_subtitle + 20
     draw.text((POSTER_WIDTH//2, y), question2, font=body_font, fill=(255,0,0), anchor="ma")
     
     # Site (bottom, above grass)
     draw.text((POSTER_WIDTH//2, int(POSTER_HEIGHT*0.8)), site_address, 
-              font=site_font, fill="black", anchor="ma")
+              font=body_font, fill="black", anchor="ma")
 
     # Add QR Code
     top_y = int(POSTER_HEIGHT*0.85)
@@ -137,7 +139,7 @@ st.write("""PNG files are great for social media posts, PDF files are great for
 col1, col2 = st.columns(2)
 with col1:
     city = st.text_input("City (e.g., Sherwood Park)", 
-                         "Municipality Name")
+                         "Municipality")
     today_local = datetime.datetime.now(APP_TZ).date()
     date_input = st.date_input("Event Date", value=today_local)
     now_local = datetime.datetime.now(APP_TZ)
@@ -152,7 +154,7 @@ with col1:
 with col2:
     address_line1 = st.text_input("Address line 1", 
                                   "Address Line 1")
-    address_line2 = st.text_input("Address line 2 (optional)", 
+    address_line2 = st.text_input("Address line 2 or 'Find us Details' (optional)", 
                                   "")
     date_str = datetime.datetime.strftime(date_input, "%A, %B %d, %Y") if date_input else ""
     time_str = (
