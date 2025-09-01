@@ -27,5 +27,5 @@ with st.sidebar:
              own risk.""")  
     st.write("""It is intended to provide helpful assets for canvassers.  No
              infringement is intended.""")
-    st.write("For any concerns, contact jamieforevercanada@gmail.com")
+    st.write("For any concerns, contact jamieforevercanadian@gmail.com")
 pg.run()
