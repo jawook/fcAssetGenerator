@@ -122,22 +122,27 @@ def to_pdf_bytes_flat(poster_img):
 #%% Streamlit Interface
 
 poster = None
+st.markdown("_If you are on mobile, look for >> in the top left for all options._")
 st.title("Generate your Own 'Today's Date' Poster")
-st.write("""Click on 'Generate Poster.'""")
-st.write("""Download buttons will appear beneath the preview image allowing you to 
-         download in png or pdf format.""")
-st.write("""PNG files are great for social media posts, PDF files are great for
-         printing.""")
-
-today_local = datetime.datetime.now(ZoneInfo("America/Edmonton")).date()
-date_input = st.date_input("Today's Date", value=today_local, disabled=True)
-date_str1 = datetime.datetime.strftime(date_input, "%a, %b %d, %Y") if date_input else ""
-date_str2 = datetime.datetime.strftime(date_input, "%m/%d/%Y") if date_input else ""
-date_strName = date_str2.replace('/','')
-if st.button("Generate Poster"):
-    poster = render_poster(date_str1, date_str2)         
+col1, col2 = st.columns(2)
+with col1:
+    st.write("""Click on 'Generate Poster.'""")
+    st.write("""Download buttons will appear beneath the preview image allowing you to 
+             download in png or pdf format.""")
+    st.write("""PNG files are great for social media posts, PDF files are great for
+             printing.""")
+    today_local = datetime.datetime.now(ZoneInfo("America/Edmonton")).date()
+    date_input = st.date_input("Today's Date", value=today_local, disabled=True)
+    date_str1 = datetime.datetime.strftime(date_input, "%a, %b %d, %Y") if date_input else ""
+    date_str2 = datetime.datetime.strftime(date_input, "%m/%d/%Y") if date_input else ""
+    date_strName = date_str2.replace('/','')
+    if st.button("Generate Poster"):
+        poster = render_poster(date_str1, date_str2)         
+with col2:
+    st.image("09012025_Date_Poster.png",caption="Sample Date Poster")
 
 if poster != None:
+    st.markdown('## Your generated poster')
     st.image(poster, caption="Preview (PNG)")
     # Download buttons
     png_buf = io.BytesIO()

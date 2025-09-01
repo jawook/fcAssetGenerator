@@ -172,14 +172,26 @@ def to_pdf_bytes_flat(poster_img):
 poster = None
 st.markdown("_If you are on mobile, look for >> in the top left for all options._")
 st.title("Generate your Own Event Details Poster")
-st.write("""Enter the relevant information below and then click on 'Generate 
-         Poster.'""")
-st.write("""Wait for the runners, kayakers and cyclists in the upper right 
-         corner to finish doing their thing. It takes a minute.  Patience...""")
-st.write("""Download buttons will appear beneath the preview image allowing you to 
-         download in png or pdf format.""")
-st.write("""PNG files are great for social media posts, PDF files are great for
-         printing.""")
+col3, col4 = st.columns(2)
+with col3:
+    st.markdown("""
+                Ensure that your event is posted on the main [Forever Canadian site.](https://www.forever-canadian.ca/signature-collectors/register-signing-location)
+                This tool is meant to provide the ability to customize posters 
+                when additional detail is required that is not available on the 
+                automatically generated posters from the site.  The Forever 
+                Canadian site will increase your reach and ensure as many people 
+                as possible find you.
+                """)
+    st.write("""Enter the relevant information below and then click on 'Generate 
+             Poster.'""")
+    st.write("""Wait for the runners, kayakers and cyclists in the upper right 
+             corner to finish doing their thing. It takes a minute.  Patience...""")
+    st.write("""Download buttons will appear beneath the preview image allowing you to 
+             download in png or pdf format.""")
+    st.write("""PNG files are great for social media posts, PDF files are great for
+             printing.""")
+with col4:
+    st.image("Your City_poster.png", caption="Sample Event Poster")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -218,6 +230,7 @@ with col2:
                                time_str, questionText, addlInfo1, addlInfo2)         
 
 if poster != None:
+    st.markdown("## Your Generated Poster")
     st.image(poster, caption="Preview (PNG)")
     # Download buttons
     png_buf = io.BytesIO()

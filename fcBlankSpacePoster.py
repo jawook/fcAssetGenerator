@@ -317,16 +317,26 @@ def render_poster(
 # Streamlit UI
 # --------------------
 
-st.title("Blank-Space Poster (Forever Canadian)")
-st.write("Top half is free text (auto-sized up to 300px). Bottom half shows logo (left) and QR + website (right).")
-
-free_text = st.text_area("Top free text", value="", height=150, help="This fills the top half of the poster. The font will auto-size and wrap (max 300px).")
-
+st.markdown("_If you are on mobile, look for >> in the top left for all options._")
+st.title("Free-Writing Forever Canadian Poster")
 colA, colB = st.columns(2)
 with colA:
+    st.write("""
+             Top half is free text (auto-sized up to 300px). Bottom half shows 
+             logo (left) and QR + website (right).
+             """)
+    free_text = st.text_area("Top free text", value="", 
+                             height=150, 
+                             help="""
+                             This fills the top half of the poster. 
+                             The font will auto-size and wrap (max 300px).
+                             """)
     make_btn = st.button("Generate Poster")
+with colB:
+    st.image("sample_blank_space Poster.png", caption="Sample Generated Poster")
 
 if make_btn:
+    st.markdown("## Your Generated Poster")
     poster = render_poster(free_text, logo_img, qr_img, site_text, custom_font)
     st.image(poster, caption="Preview", use_container_width=True)
 
