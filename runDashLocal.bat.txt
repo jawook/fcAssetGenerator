@@ -1,0 +1,6 @@
+@echo off
+REM === (optional) activate your virtualenv ===
+REM call "C:\Users\JamieWilkie\OneDrive - AMT\Documents\Github\fcAssetGenerator\.venv\Scripts\activate.bat"
+
+cd /d "C:\Users\JamieWilkie\OneDrive - AMT\Documents\Github\fcAssetGenerator"
+streamlit run "fcAssetGenerator.py" --server.port 8501 --server.headless false

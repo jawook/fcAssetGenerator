@@ -14,7 +14,8 @@ pages = {
         ],
     "Asset Builder": [
         st.Page("fcEventPosterGenerator.py", title="Generate an Event Poster"),
-        st.Page("fcTodayPoster.py", title="Generate a Today's Date Poster")
+        st.Page("fcTodayPoster.py", title="Generate a Today's Date Poster"),
+        st.Page("fcBlankSpacePoster.py", title="Free Writing Poster with Logo")
         ]
     }
 

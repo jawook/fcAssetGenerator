@@ -122,7 +122,6 @@ def to_pdf_bytes_flat(poster_img):
 #%% Streamlit Interface
 
 poster = None
-st.markdown("_If you are on mobile, look for >> in the top left for all options._")
 st.title("Generate your Own 'Today's Date' Poster")
 st.write("""Click on 'Generate Poster.'""")
 st.write("""Download buttons will appear beneath the preview image allowing you to 
