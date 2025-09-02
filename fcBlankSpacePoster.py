@@ -41,7 +41,7 @@ DEFAULT_FONTS = [
 
 custom_font = None
 
-site_text = "forevercanadian.ca"
+site_text = "forever-canadian.ca"
 logo_img = Image.open("Forever Canadian No Background.png").convert("RGBA")
 qr_img = Image.open("qrcode.png").convert("RGBA")
 
